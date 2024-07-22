@@ -2,6 +2,11 @@ import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
 
+# Set page configuration
+st.set_page_config(page_title="Health Assistant",
+                   layout="wide",
+                   page_icon="🧑‍⚕️")
+
 # loading the saved models
 diabeties_model = pickle.load(open(r"C:/Users/Dell/Desktop/Multiple_Disease_Predictor/Saved Models/diabetes_model.sav",'rb'))
 
@@ -201,6 +206,26 @@ if (selected == 'Parkinsons Prediction'):
     with col2:
         PPE = st.text_input('PPE')
 
+     # code for Prediction
+    parkinsons_diagnosis = ''
+
+    # creating a button for Prediction    
+    if st.button("Parkinson's Test Result"):
+
+        user_input = [fo, fhi, flo, Jitter_percent, Jitter_Abs,
+                      RAP, PPQ, DDP,Shimmer, Shimmer_dB, APQ3, APQ5,
+                      APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]
+
+        user_input = [float(x) for x in user_input]
+
+        parkinsons_prediction = parkinsons_model.predict([user_input])
+
+        if parkinsons_prediction[0] == 1:
+            parkinsons_diagnosis = "The person has Parkinson's disease"
+        else:
+            parkinsons_diagnosis = "The person does not have Parkinson's disease"
+
+    st.success(parkinsons_diagnosis)
     
     
     
